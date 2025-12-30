@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+
+# Large ML models
+distilbert_spelling/
+*.safetensors
+*.bin
+
+# OS
+.DS_Store
+Thumbs.db
