@@ -1,0 +1,23 @@
+# Core
+python>=3.9
+
+# Data & ML
+numpy
+pandas
+scikit-learn
+joblib
+
+# Deep Learning / NLP
+torch
+transformers
+datasets
+accelerate
+
+# Web App
+streamlit
+
+# Text-to-Speech
+pyttsx3
+
+# Utilities
+tqdm
