@@ -1,6 +1,6 @@
 
 
-# 🧠 AI Spelling Tutor – An Intelligent Learning Agent
+# 🧠 SpellCheck – An Intelligent Learning Agent
 
 An **AI-powered spelling tutor** designed as an intelligent learning agent rather than a traditional spell checker.
 The system detects spelling mistakes, classifies error types, provides educational feedback, and adapts difficulty based on user performance.
