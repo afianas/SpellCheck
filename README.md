@@ -1,7 +1,4 @@
-Here is a **clean, professional, and well-structured README.md** that matches your project scope, your code, and **IBM SkillsBuild expectations**.
-You can paste this **directly into your repository**.
 
----
 
 # 🧠 AI Spelling Tutor – An Intelligent Learning Agent
 
