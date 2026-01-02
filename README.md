@@ -133,6 +133,19 @@ AI-Spelling-Tutor/
 ```
 
 ---
+## 📦 Pretrained DistilBERT Model
+
+Due to GitHub file size limitations, the fine-tuned DistilBERT model used in this project is hosted externally.
+
+🔗 **Download the DistilBERT model from Google Drive:**  
+[https://drive.google.com/drive/folders/1vtmAJMCh0IcBntfTnukbL9NPWSHHL0tn?usp=sharing]
+
+### How to use the downloaded model
+1. Download and extract the folder from Google Drive.
+2. Place the extracted folder in the project root directory.
+3. Ensure the folder name matches the path used in the code (e.g., `distilbert_spelling/`).
+
+Once downloaded and placed correctly, the application will load the model automatically.
 
 ## 🎓 Learning Outcomes
 
