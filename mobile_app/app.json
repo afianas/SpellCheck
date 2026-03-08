@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "AI Spelling Tutor",
+    "slug": "spelling-tutor-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "userInterfaceStyle": "light",
+    "sdkVersion": "54.0.0",
+    "splash": {
+      "backgroundColor": "#FFFBF0"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.yourname.spellingtutor"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FFB830"
+      },
+      "package": "com.yourname.spellingtutor"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-av",
+        {
+          "microphonePermission": false
+        }
+      ]
+    ],
+    "scheme": "spellingtutor",
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
