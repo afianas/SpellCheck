@@ -158,5 +158,15 @@ Once downloaded and placed correctly, the application will load the model automa
 ---
 🛠️ Project Status: Under development. Features and updates coming soon.
 
+## Project Versions
+
+This repository contains multiple versions of the application:
+
+- Streamlit prototype (initial AI spelling tutor)
+- React Native mobile app (child-friendly learning interface) - work under progress
+
+The mobile application communicates with the backend AI models via API.
+
+
 
 
