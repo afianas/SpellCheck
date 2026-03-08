@@ -156,6 +156,7 @@ Once downloaded and placed correctly, the application will load the model automa
 * Developed a real-world educational AI application
 
 ---
+🛠️ Project Status: Under development. Features and updates coming soon.
 
 
 
