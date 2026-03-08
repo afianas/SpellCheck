@@ -3,8 +3,7 @@ import axios from 'axios';
 // 🔧 Change this to your machine's LAN IP
 // Run `ipconfig` in terminal → look for IPv4 Address
 // e.g. http://192.168.1.42:8000
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://192.168.1.100:8000';
-
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8000';
 export const api = axios.create({
   baseURL: BASE_URL,
   timeout: 10000,

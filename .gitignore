@@ -14,3 +14,9 @@ distilbert_spelling/
 # OS
 .DS_Store
 Thumbs.db
+
+# React Native
+mobile_app/node_modules
+mobile_app/.expo
+mobile_app/.expo-shared
+mobile_app/dist
