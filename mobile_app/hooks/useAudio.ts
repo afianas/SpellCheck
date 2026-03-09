@@ -37,8 +37,16 @@ export const useAudio = (): UseAudioReturn => {
         });
 
         const audioUrl = `${api.defaults.baseURL}/speak?word=${encodeURIComponent(word)}`;
+
+        console.log('[useAudio] Loading from:', audioUrl);
+
         const { sound: newSound } = await Audio.Sound.createAsync(
-          { uri: audioUrl },
+          {
+            uri: audioUrl,
+            headers: {
+              'ngrok-skip-browser-warning': 'true',
+            },
+          },
           { shouldPlay: true }
         );
 

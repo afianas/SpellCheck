@@ -1,14 +1,15 @@
-import pyttsx3
 import tempfile
 import os
 
-_engine = pyttsx3.init()
-
 def speak(text: str) -> str:
-    fd, path = tempfile.mkstemp(suffix=".mp3")
+    import pyttsx3
+    
+    fd, path = tempfile.mkstemp(suffix=".wav")
     os.close(fd)
 
-    _engine.save_to_file(text, path)
-    _engine.runAndWait()
+    engine = pyttsx3.init()
+    engine.save_to_file(text, path)
+    engine.runAndWait()
+    engine.stop()
 
     return path
