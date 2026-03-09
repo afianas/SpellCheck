@@ -1,0 +1,17 @@
+[33mb7f80ed[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m  add common and feedback UI components
+[33mfbcf4fc[m Merge branch 'main' of https://github.com/afianas/SpellCheck
+[33m5d41d35[m Updated feedback.tsx, WordAudioPlayer.tsx, add core API endpoints for spelling practice and TTS
+[33m6a8cf1c[m Update README.md
+[33meb2bdf8[m Merge branch 'main' of https://github.com/afianas/SpellCheck
+[33m68857c1[m Add React Native mobile frontend for spelling tutor
+[33mcd4ce83[m Update README.md
+[33m6261ae8[m Merge branch 'main' of https://github.com/afianas/SpellCheck
+[33m7643fad[m Added demo
+[33m92ebfc1[m Update README.md
+[33m2b2526b[m Update README.md
+[33m0bf6cec[m Update README.md
+[33m0bc2ccc[m Merge branch 'main' of https://github.com/afianas/SpellCheck
+[33mdd5e408[m Added requirements.txt
+[33mcb3ae8a[m Update README.md
+[33m5f5396d[m Create README.md
+[33me4cd0e0[m Initial commit: AI Spelling Tutor
