@@ -54,7 +54,7 @@ An AI-powered mobile spelling tutor app built with React Native and Expo, backed
 
 ## 🗂 Project Structure
 
-
+```
 AI-Spelling-Tutor/
 ├── api_server.py              ← FastAPI backend
 ├── src/
@@ -78,7 +78,7 @@ AI-Spelling-Tutor/
     ├── store/
     ├── types/
     └── utils/
-
+````
 ---
 ## DEMO
  https://drive.google.com/file/d/1MT9RB3m0YGTVKr0dF5mG0qanV6kbEai8/view?usp=sharing 
