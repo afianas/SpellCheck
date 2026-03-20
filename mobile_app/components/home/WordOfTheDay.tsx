@@ -12,7 +12,6 @@ import { useAudio } from '../../hooks/useAudio';
 import { Colors } from '../../constants/colors';
 import { DifficultyBadge } from '../practice/DifficultyBadge';
 
-// Fallback words if API is unreachable
 const FALLBACK_WORDS: WordResponse[] = [
   { word: 'friend', difficulty: 'easy', meaning: 'A person you like and trust.' },
   { word: 'because', difficulty: 'medium', meaning: 'For the reason that.' },
@@ -26,20 +25,14 @@ const FALLBACK_WORDS: WordResponse[] = [
 export const WordOfTheDay: React.FC = () => {
   const [wordData, setWordData] = useState<WordResponse | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isOffline, setIsOffline] = useState(false);
-  const { playWord, isPlaying } = useAudio();
+  const { playWord, isPlaying, isLoading: audioLoading } = useAudio();
 
   useEffect(() => {
     fetchWordOfDay()
-      .then((data) => {
-        setWordData(data);
-        setIsOffline(false);
-      })
+      .then((data) => setWordData(data))
       .catch(() => {
-        // Use a fallback word based on day of month
         const fallback = FALLBACK_WORDS[new Date().getDate() % FALLBACK_WORDS.length];
         setWordData(fallback);
-        setIsOffline(true);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -58,24 +51,22 @@ export const WordOfTheDay: React.FC = () => {
     <View style={styles.card}>
       <View style={styles.header}>
         <Text style={styles.title}>✨ Word of the Day</Text>
-        <View style={styles.headerRight}>
-          {isOffline && (
-            <Text style={styles.offlineBadge}>📴 offline</Text>
-          )}
-          <DifficultyBadge difficulty={wordData.difficulty} size="sm" />
-        </View>
+        <DifficultyBadge difficulty={wordData.difficulty} size="sm" />
       </View>
 
-      <TouchableOpacity
-        onPress={() => !isOffline && playWord(wordData.word)}
-        style={styles.wordRow}
-        activeOpacity={isOffline ? 1 : 0.7}
-      >
+      {/* Word + speaker button */}
+      <View style={styles.wordRow}>
         <Text style={styles.word}>{wordData.word}</Text>
-        {!isOffline && (
-          <Text style={styles.speakIcon}>{isPlaying ? '🔊' : '🎧'}</Text>
-        )}
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => playWord(wordData.word)}
+          style={[styles.speakBtn, (isPlaying || audioLoading) && styles.speakBtnActive]}
+          activeOpacity={0.75}
+        >
+          <Text style={styles.speakIcon}>
+            {audioLoading ? '⏳' : isPlaying ? '🔊' : '🎧'}
+          </Text>
+        </TouchableOpacity>
+      </View>
 
       {wordData.meaning && (
         <Text style={styles.meaning}>{wordData.meaning}</Text>
@@ -84,6 +75,8 @@ export const WordOfTheDay: React.FC = () => {
       {wordData.example_sentence && (
         <Text style={styles.example}>"{wordData.example_sentence}"</Text>
       )}
+
+      <Text style={styles.tapHint}>Tap 🎧 to hear the word</Text>
     </View>
   );
 };
@@ -109,31 +102,35 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  headerRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
   title: {
     fontFamily: 'Nunito-ExtraBold',
     fontSize: 16,
     color: Colors.textSecondary,
   },
-  offlineBadge: {
-    fontFamily: 'Nunito-SemiBold',
-    fontSize: 11,
-    color: Colors.textMuted,
-  },
   wordRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    justifyContent: 'space-between',
   },
   word: {
     fontFamily: 'Nunito-ExtraBold',
     fontSize: 36,
     color: Colors.textPrimary,
     letterSpacing: 2,
+  },
+  speakBtn: {
+    backgroundColor: Colors.primary + '18',
+    borderRadius: 50,
+    width: 56,
+    height: 56,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: Colors.primary + '44',
+  },
+  speakBtnActive: {
+    backgroundColor: Colors.primary + '33',
+    borderColor: Colors.primary,
   },
   speakIcon: { fontSize: 26 },
   meaning: {
@@ -147,5 +144,11 @@ const styles = StyleSheet.create({
     color: Colors.textMuted,
     fontStyle: 'italic',
     lineHeight: 20,
+  },
+  tapHint: {
+    fontFamily: 'Nunito-Regular',
+    fontSize: 12,
+    color: Colors.textMuted,
+    textAlign: 'right',
   },
 });
