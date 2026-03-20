@@ -55,30 +55,62 @@ An AI-powered mobile spelling tutor app built with React Native and Expo, backed
 ## 🗂 Project Structure
 
 ```
+
 AI-Spelling-Tutor/
-├── api_server.py              ← FastAPI backend
+├── api_server.py               ← FastAPI backend entry point
+├── requirements.txt
+├── data/
+│   └── correct_words.txt       ← Word bank
 ├── src/
-│   ├── hybrid_inference.py    ← DistilBERT + char-level pipeline
-│   ├── word_bank.py           ← Word selection by difficulty
-│   └── tts.py                 ← Text-to-speech
-├── data/correct_words.txt
-├── models/char_model/
-├── distilbert_spelling/
-└── mobile_app/
-    ├── app/
-    │   ├── _layout.tsx
-    │   ├── feedback.tsx
-    │   └── (tabs)/
-    │       ├── index.tsx      ← Home
-    │       ├── practice.tsx   ← Spelling practice
-    │       └── progress.tsx   ← Stats & progress
-    ├── components/
-    ├── hooks/
-    ├── services/
-    ├── store/
-    ├── types/
-    └── utils/
-````
+│   ├── hybrid_inference.py     ← DistilBERT + char-level pipeline
+│   ├── bert_model.py           ← DistilBERT model loader
+│   ├── char_model.py           ← Character-level classifier
+│   ├── word_bank.py            ← Word selection by difficulty
+│   └── tts.py                  ← Google TTS (gTTS)
+├── models/
+│   └── char_model/
+│       ├── spelling_binary_model.pkl
+│       ├── spelling_binary_vectorizer.pkl
+│       ├── spelling_error_model.pkl
+│       └── spelling_error_vectorizer.pkl
+├── distilbert_spelling/        ← Fine-tuned DistilBERT weights
+├── app/
+│   ├── agent.py
+│   └── streamlit_app.py        ← Streamlit web demo
+├── mobile_app/
+│   ├── app/
+│   │   ├── (tabs)/
+│   │   │   ├── index.tsx       ← Home screen
+│   │   │   ├── practice.tsx    ← Spelling practice screen
+│   │   │   └── progress.tsx    ← Progress & stats screen
+│   │   ├── feedback.tsx
+│   │   └── _layout.tsx
+│   ├── components/
+│   │   ├── common/             ← Badge, BigButton, LoadingSpinner
+│   │   ├── feedback/           ← ConfettiEffect, ResultCard, ErrorExplanation
+│   │   ├── home/               ← WordOfTheDay
+│   │   ├── practice/           ← WordAudioPlayer, SpellingInput, HintReveal, DifficultySelector
+│   │   └── progress/           ← StatCard, StreakCounter
+│   ├── hooks/
+│   │   ├── useAudio.ts
+│   │   ├── useProgress.ts
+│   │   ├── useSpellCheck.ts
+│   │   └── useWord.ts
+│   ├── services/
+│   │   ├── api.ts
+│   │   ├── spellcheck.ts
+│   │   └── wordBank.ts
+│   ├── store/
+│   │   ├── gameStore.ts
+│   │   └── progressStore.ts
+│   ├── constants/              ← colors, typography, difficulty
+│   ├── types/                  ← TypeScript interfaces
+│   ├── utils/                  ← storage, hintGenerator, errorMessages
+│   └── assets/
+│       └── fonts/              ← Nunito font family
+└── notebooks/
+    └── spelling.ipynb          ← Model training notebook
+
 ---
 ## DEMO
  https://drive.google.com/file/d/1MT9RB3m0YGTVKr0dF5mG0qanV6kbEai8/view?usp=sharing 
