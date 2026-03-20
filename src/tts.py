@@ -7,7 +7,7 @@ def speak(text: str, slow: bool = False) -> str:
     fd, path = tempfile.mkstemp(suffix=".mp3")
     os.close(fd)
 
-    tts = gTTS(text=text, lang='en', slow=slow)
+    tts = gTTS(text=text, lang='en', tld='us', slow=slow)
     tts.save(path)
 
     return path
