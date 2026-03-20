@@ -112,6 +112,7 @@ AI-Spelling-Tutor/
     └── spelling.ipynb          ← Model training notebook
 
 ---
+```
 ## DEMO
  https://drive.google.com/file/d/1MT9RB3m0YGTVKr0dF5mG0qanV6kbEai8/view?usp=sharing 
 ## 🚀 Getting Started
