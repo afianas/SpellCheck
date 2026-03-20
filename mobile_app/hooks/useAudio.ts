@@ -5,7 +5,7 @@ import { api } from '../services/api';
 interface UseAudioReturn {
   isPlaying: boolean;
   isLoading: boolean;
-  playWord: (word: string) => Promise<void>;
+  playWord: (word: string, slow?: boolean) => Promise<void>;
   stop: () => Promise<void>;
 }
 
@@ -24,7 +24,7 @@ export const useAudio = (): UseAudioReturn => {
   }, [sound]);
 
   const playWord = useCallback(
-    async (word: string) => {
+    async (word: string, slow: boolean = false) => {
       if (!word) return;
       await stop();
       setIsLoading(true);
@@ -36,9 +36,9 @@ export const useAudio = (): UseAudioReturn => {
           shouldDuckAndroid: true,
         });
 
-        const audioUrl = `${api.defaults.baseURL}/speak?word=${encodeURIComponent(word)}`;
+        const audioUrl = `${api.defaults.baseURL}/speak?word=${encodeURIComponent(word)}${slow ? '&slow=true' : ''}`;
 
-        console.log('[useAudio] Loading from:', audioUrl);
+        console.log('[useAudio] Loading from:', audioUrl, slow ? '(slow)' : '(normal)');
 
         const { sound: newSound } = await Audio.Sound.createAsync(
           {
@@ -47,7 +47,9 @@ export const useAudio = (): UseAudioReturn => {
               'ngrok-skip-browser-warning': 'true',
             },
           },
-          { shouldPlay: true }
+          {
+            shouldPlay: true,
+          }
         );
 
         setSound(newSound);

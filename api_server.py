@@ -89,12 +89,12 @@ def word_of_day():
 
 
 @app.get("/speak")
-async def speak_word(word: str):
+async def speak_word(word: str, slow: bool = False):
     if not word or len(word) > 50:
         raise HTTPException(status_code=400, detail="Invalid word")
 
     loop = asyncio.get_event_loop()
-    audio_path = await loop.run_in_executor(executor, speak, word)
+    audio_path = await loop.run_in_executor(executor, speak, word, slow)
 
     with open(audio_path, "rb") as f:
         audio_bytes = f.read()
@@ -106,9 +106,9 @@ async def speak_word(word: str):
 
     return Response(
         content=audio_bytes,
-        media_type="audio/wav",
+        media_type="audio/mpeg",
         headers={
-            "Content-Disposition": f"attachment; filename={word}.wav",
+            "Content-Disposition": f"attachment; filename={word}.mp3",
             "Access-Control-Allow-Origin": "*",
             "ngrok-skip-browser-warning": "true",
         }

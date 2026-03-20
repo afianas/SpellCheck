@@ -1,60 +1,118 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import { useAudio } from '../../hooks/useAudio';
 import { Colors } from '../../constants/colors';
 
-interface WordAudioPlayerProps {
+interface Props {
   word: string;
 }
 
-export const WordAudioPlayer: React.FC<WordAudioPlayerProps> = ({ word }) => {
-  const { isPlaying, isLoading, playWord } = useAudio();
-  const scaleAnim = React.useRef(new Animated.Value(1)).current;
+export const WordAudioPlayer: React.FC<Props> = ({ word }) => {
+  const { playWord, isPlaying, isLoading, stop } = useAudio();
 
-  const handlePress = () => {
-    Animated.sequence([
-      Animated.spring(scaleAnim, { toValue: 0.92, useNativeDriver: true }),
-      Animated.spring(scaleAnim, { toValue: 1, useNativeDriver: true }),
-    ]).start();
-    playWord(word);
-  };
+  // Auto-play when word changes
+  useEffect(() => {
+    if (word) {
+      playWord(word, false);
+    }
+    return () => {
+      stop();
+    };
+  }, [word]);
 
   return (
     <View style={styles.container}>
-      <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-        <TouchableOpacity
-          onPress={handlePress}
-          disabled={isLoading}
-          activeOpacity={0.85}
-          style={[styles.button, isPlaying && styles.buttonPlaying]}
-        >
-          <Text style={styles.icon}>{isLoading ? '⏳' : isPlaying ? '🔊' : '🎧'}</Text>
-          <Text style={styles.label}>
-            {isLoading ? 'Loading...' : isPlaying ? 'Playing...' : 'Hear the Word'}
-          </Text>
-        </TouchableOpacity>
-      </Animated.View>
-      <TouchableOpacity onPress={handlePress} disabled={isLoading || isPlaying} style={styles.repeatBtn}>
-        <Text style={styles.repeatText}>🔁 Repeat</Text>
+      {/* Normal speed button */}
+      <TouchableOpacity
+        style={[styles.btn, styles.btnPrimary, isPlaying && styles.btnActive]}
+        onPress={() => playWord(word, false)}
+        disabled={isLoading}
+        activeOpacity={0.8}
+      >
+        {isLoading ? (
+          <ActivityIndicator color={Colors.white} size="small" />
+        ) : (
+          <Text style={styles.btnIcon}>{isPlaying ? '🔊' : '🎧'}</Text>
+        )}
+        <Text style={styles.btnLabel}>
+          {isLoading ? 'Loading...' : isPlaying ? 'Playing...' : 'Play Word'}
+        </Text>
+      </TouchableOpacity>
+
+      {/* Slow speed button */}
+      <TouchableOpacity
+        style={[styles.btn, styles.btnSlow]}
+        onPress={() => playWord(word, true)}
+        disabled={isLoading}
+        activeOpacity={0.8}
+      >
+        <Text style={styles.btnIcon}>🐢</Text>
+        <Text style={[styles.btnLabel, { color: Colors.secondary }]}>
+          Play Slowly
+        </Text>
+      </TouchableOpacity>
+
+      {/* Repeat button */}
+      <TouchableOpacity
+        style={styles.repeatBtn}
+        onPress={() => playWord(word, false)}
+        disabled={isLoading}
+        activeOpacity={0.7}
+      >
+        <Text style={styles.repeatIcon}>🔁</Text>
+        <Text style={styles.repeatLabel}>Repeat</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { alignItems: 'center', gap: 10 },
-  button: {
-    flexDirection: 'row', alignItems: 'center',
-    backgroundColor: Colors.secondary,
-    paddingVertical: 18, paddingHorizontal: 36,
-    borderRadius: 24, gap: 10,
-    shadowColor: Colors.secondaryDark,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3, shadowRadius: 8, elevation: 6,
+  container: {
+    gap: 10,
   },
-  buttonPlaying: { backgroundColor: Colors.secondaryDark },
-  icon: { fontSize: 28 },
-  label: { fontFamily: 'Nunito-Bold', fontSize: 20, color: Colors.white },
-  repeatBtn: { paddingVertical: 8, paddingHorizontal: 16 },
-  repeatText: { fontFamily: 'Nunito-SemiBold', fontSize: 15, color: Colors.textSecondary },
+  btn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    paddingVertical: 18,
+    gap: 10,
+    borderWidth: 2.5,
+  },
+  btnPrimary: {
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primaryDark,
+  },
+  btnActive: {
+    backgroundColor: Colors.primaryDark,
+  },
+  btnSlow: {
+    backgroundColor: Colors.white,
+    borderColor: Colors.secondary,
+  },
+  btnIcon: { fontSize: 24 },
+  btnLabel: {
+    fontFamily: 'Nunito-ExtraBold',
+    fontSize: 18,
+    color: Colors.white,
+  },
+  repeatBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 4,
+  },
+  repeatIcon: { fontSize: 16 },
+  repeatLabel: {
+    fontFamily: 'Nunito-SemiBold',
+    fontSize: 14,
+    color: Colors.textMuted,
+  },
 });

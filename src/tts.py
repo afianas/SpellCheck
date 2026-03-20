@@ -1,15 +1,13 @@
 import tempfile
 import os
 
-def speak(text: str) -> str:
-    import pyttsx3
-    
-    fd, path = tempfile.mkstemp(suffix=".wav")
+def speak(text: str, slow: bool = False) -> str:
+    from gtts import gTTS
+
+    fd, path = tempfile.mkstemp(suffix=".mp3")
     os.close(fd)
 
-    engine = pyttsx3.init()
-    engine.save_to_file(text, path)
-    engine.runAndWait()
-    engine.stop()
+    tts = gTTS(text=text, lang='en', slow=slow)
+    tts.save(path)
 
     return path

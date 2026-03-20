@@ -8,6 +8,8 @@ import {
   Platform,
   ActivityIndicator,
   Animated,
+  Modal,
+  TouchableOpacity,
 } from 'react-native';
 import { Colors } from '../../constants/colors';
 import { useGameStore } from '../../store/gameStore';
@@ -18,6 +20,7 @@ import { WordAudioPlayer } from '../../components/practice/WordAudioPlayer';
 import { SpellingInput } from '../../components/practice/SpellingInput';
 import { HintReveal } from '../../components/practice/HintReveal';
 import { DifficultyBadge } from '../../components/practice/DifficultyBadge';
+import { DifficultySelector } from '../../components/practice/DifficultySelector';
 import { ResultCard } from '../../components/feedback/ResultCard';
 import { ConfettiEffect } from '../../components/feedback/ConfettiEffect';
 import { BigButton } from '../../components/common/BigButton';
@@ -48,9 +51,9 @@ export default function PracticeScreen() {
   const [hasError, setHasError] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [levelUpMsg, setLevelUpMsg] = useState<string | null>(null);
+  const [showDifficultyModal, setShowDifficultyModal] = useState(false);
   const levelUpAnim = useRef(new Animated.Value(0)).current;
 
-  // Load first word on mount
   useEffect(() => {
     loadNextWord(difficulty);
   }, []);
@@ -76,6 +79,13 @@ export default function PracticeScreen() {
     }
   };
 
+  const handleDifficultyChange = useCallback((newDifficulty: Difficulty) => {
+    setDifficulty(newDifficulty);
+    setShowDifficultyModal(false);
+    setPhase('loading');
+    loadNextWord(newDifficulty);
+  }, []);
+
   const handleSubmit = useCallback(async () => {
     if (!userInput.trim() || !wordData) return;
 
@@ -99,10 +109,8 @@ export default function PracticeScreen() {
       setHasError(true);
     }
 
-    // Record attempt and get new difficulty
     const newDifficulty = await recordAttempt(isCorrect, difficulty);
 
-    // Sync difficulty to game store if it changed
     if (newDifficulty !== difficulty) {
       setDifficulty(newDifficulty);
       showLevelUp(newDifficulty);
@@ -115,7 +123,6 @@ export default function PracticeScreen() {
     await loadNextWord(difficulty);
   }, [difficulty]);
 
-  // ─── Loading ───────────────────────────────────────────────
   if (phase === 'loading' || wordLoading) {
     return (
       <View style={styles.centeredScreen}>
@@ -130,15 +137,41 @@ export default function PracticeScreen() {
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      {/* Confetti overlay */}
       <ConfettiEffect trigger={showConfetti} />
 
-      {/* Level up banner */}
       {levelUpMsg && (
         <Animated.View style={[styles.levelUpBanner, { opacity: levelUpAnim }]}>
           <Text style={styles.levelUpText}>{levelUpMsg}</Text>
         </Animated.View>
       )}
+
+      {/* Difficulty Selector Modal */}
+      <Modal
+        visible={showDifficultyModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowDifficultyModal(false)}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setShowDifficultyModal(false)}
+        >
+          <View style={styles.modalBox}>
+            <Text style={styles.modalTitle}>Choose Difficulty</Text>
+            <DifficultySelector
+              current={difficulty}
+              onChange={handleDifficultyChange}
+            />
+            <TouchableOpacity
+              style={styles.modalCancel}
+              onPress={() => setShowDifficultyModal(false)}
+            >
+              <Text style={styles.modalCancelText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
 
       <ScrollView
         style={styles.screen}
@@ -149,7 +182,12 @@ export default function PracticeScreen() {
         {/* Top bar */}
         <View style={styles.topBar}>
           <Text style={styles.screenTitle}>✏️ Spelling Practice</Text>
-          <DifficultyBadge difficulty={difficulty} size="sm" />
+          <TouchableOpacity
+            onPress={() => setShowDifficultyModal(true)}
+            activeOpacity={0.8}
+          >
+            <DifficultyBadge difficulty={difficulty} size="sm" />
+          </TouchableOpacity>
         </View>
 
         {/* Score strip */}
@@ -330,5 +368,42 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito-ExtraBold',
     fontSize: 18,
     color: Colors.white,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  modalBox: {
+    backgroundColor: Colors.background,
+    borderRadius: 28,
+    padding: 24,
+    width: '100%',
+    gap: 18,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
+    elevation: 12,
+  },
+  modalTitle: {
+    fontFamily: 'Nunito-ExtraBold',
+    fontSize: 22,
+    color: Colors.textPrimary,
+    textAlign: 'center',
+  },
+  modalCancel: {
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderRadius: 14,
+    borderWidth: 1.5,
+    borderColor: Colors.border,
+  },
+  modalCancelText: {
+    fontFamily: 'Nunito-Bold',
+    fontSize: 15,
+    color: Colors.textMuted,
   },
 });
