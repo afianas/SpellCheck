@@ -17,21 +17,22 @@ import { getAccuracy } from '../../utils/storage';
 export default function ProgressScreen() {
   const { progress, resetProgress } = useProgress();
   const accuracy = getAccuracy(progress);
+  const incorrect = progress.wordsPracticed - progress.correctCount;
 
   const handleReset = () => {
     Alert.alert(
       'Reset Progress?',
-      'This will clear all your stats. Are you sure?',
+      'This will clear all your stats and return to Easy level. Are you sure?',
       [
         { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Reset',
-          style: 'destructive',
-          onPress: resetProgress,
-        },
+        { text: 'Reset', style: 'destructive', onPress: resetProgress },
       ]
     );
   };
+
+  // Accuracy bar width
+  const accuracyColor =
+    accuracy >= 80 ? Colors.success : accuracy >= 60 ? Colors.medium : Colors.error;
 
   return (
     <ScrollView
@@ -46,6 +47,27 @@ export default function ProgressScreen() {
         <StreakCounter streak={progress.streak} />
       </View>
 
+      {/* Accuracy bar */}
+      <View style={styles.card}>
+        <Text style={styles.cardLabel}>Overall Accuracy</Text>
+        <Text style={[styles.accuracyValue, { color: accuracyColor }]}>{accuracy}%</Text>
+        <View style={styles.barBackground}>
+          <View
+            style={[
+              styles.barFill,
+              { width: `${accuracy}%` as any, backgroundColor: accuracyColor },
+            ]}
+          />
+        </View>
+        <Text style={styles.accuracyHint}>
+          {accuracy >= 80
+            ? '🏆 Excellent!'
+            : accuracy >= 60
+            ? '💪 Good work!'
+            : '🌱 Keep practising!'}
+        </Text>
+      </View>
+
       {/* Stats grid */}
       <View style={styles.statsGrid}>
         <StatCard
@@ -55,25 +77,25 @@ export default function ProgressScreen() {
           color={Colors.secondary}
         />
         <StatCard
-          emoji="🎯"
-          value={`${accuracy}%`}
-          label="Accuracy"
+          emoji="✅"
+          value={progress.correctCount}
+          label="Correct"
           color={Colors.success}
         />
       </View>
 
       <View style={styles.statsGrid}>
         <StatCard
-          emoji="✅"
-          value={progress.correctCount}
-          label="Correct"
-          color={Colors.success}
-        />
-        <StatCard
           emoji="❌"
-          value={progress.wordsPracticed - progress.correctCount}
+          value={incorrect}
           label="Incorrect"
           color={Colors.error}
+        />
+        <StatCard
+          emoji="🎯"
+          value={`${accuracy}%`}
+          label="Accuracy"
+          color={accuracyColor}
         />
       </View>
 
@@ -82,9 +104,12 @@ export default function ProgressScreen() {
         <Text style={styles.cardLabel}>Current Level</Text>
         <DifficultyBadge difficulty={progress.currentDifficulty} size="lg" />
         <Text style={styles.levelHint}>
-          {progress.currentDifficulty === 'easy' && 'Words with 4 or fewer letters'}
-          {progress.currentDifficulty === 'medium' && 'Words with 5–7 letters'}
-          {progress.currentDifficulty === 'hard' && 'Words with 8+ letters'}
+          {progress.currentDifficulty === 'easy' && '🌱 Words with 4 or fewer letters'}
+          {progress.currentDifficulty === 'medium' && '🌟 Words with 5–7 letters'}
+          {progress.currentDifficulty === 'hard' && '🔥 Words with 8+ letters'}
+        </Text>
+        <Text style={styles.levelSubHint}>
+          Get 5 correct answers in a row to level up!
         </Text>
       </View>
 
@@ -139,8 +164,36 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito-Bold',
     fontSize: 16,
     color: Colors.textSecondary,
+    alignSelf: 'flex-start',
+  },
+  accuracyValue: {
+    fontFamily: 'Nunito-ExtraBold',
+    fontSize: 42,
+    alignSelf: 'flex-start',
+  },
+  barBackground: {
+    width: '100%',
+    height: 16,
+    backgroundColor: Colors.border,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  barFill: {
+    height: '100%',
+    borderRadius: 8,
+  },
+  accuracyHint: {
+    fontFamily: 'Nunito-SemiBold',
+    fontSize: 14,
+    color: Colors.textSecondary,
+    alignSelf: 'flex-start',
   },
   levelHint: {
+    fontFamily: 'Nunito-SemiBold',
+    fontSize: 14,
+    color: Colors.textSecondary,
+  },
+  levelSubHint: {
     fontFamily: 'Nunito-Regular',
     fontSize: 13,
     color: Colors.textMuted,

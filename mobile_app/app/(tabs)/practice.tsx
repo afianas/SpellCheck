@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -6,34 +6,49 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
+  Animated,
 } from 'react-native';
 import { Colors } from '../../constants/colors';
 import { useGameStore } from '../../store/gameStore';
+import { useProgressStore } from '../../store/progressStore';
 import { useSpellCheck } from '../../hooks/useSpellCheck';
 import { useWord } from '../../hooks/useWord';
-import { useProgress } from '../../hooks/useProgress';
 import { WordAudioPlayer } from '../../components/practice/WordAudioPlayer';
 import { SpellingInput } from '../../components/practice/SpellingInput';
 import { HintReveal } from '../../components/practice/HintReveal';
 import { DifficultyBadge } from '../../components/practice/DifficultyBadge';
 import { ResultCard } from '../../components/feedback/ResultCard';
+import { ConfettiEffect } from '../../components/feedback/ConfettiEffect';
 import { BigButton } from '../../components/common/BigButton';
-import { LoadingSpinner } from '../../components/common/LoadingSpinner';
-import { SpellCheckResult } from '../../types';
+import { SpellCheckResult, Difficulty } from '../../types';
 
 type Phase = 'loading' | 'input' | 'result';
 
 export default function PracticeScreen() {
-  const { difficulty, setCurrentWord, incrementScore, incrementStreak, resetStreak, useHint } =
-    useGameStore();
+  const {
+    difficulty,
+    score,
+    streak,
+    setCurrentWord,
+    setDifficulty,
+    incrementScore,
+    incrementStreak,
+    resetStreak,
+    useHint,
+  } = useGameStore();
+
+  const { recordAttempt, sessionCorrect } = useProgressStore();
   const { wordData, isLoading: wordLoading, loadNextWord } = useWord();
   const { check, isChecking } = useSpellCheck();
-  const { recordAttempt } = useProgress();
 
   const [phase, setPhase] = useState<Phase>('loading');
   const [userInput, setUserInput] = useState('');
   const [result, setResult] = useState<SpellCheckResult | null>(null);
   const [hasError, setHasError] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [levelUpMsg, setLevelUpMsg] = useState<string | null>(null);
+  const levelUpAnim = useRef(new Animated.Value(0)).current;
 
   // Load first word on mount
   useEffect(() => {
@@ -50,14 +65,25 @@ export default function PracticeScreen() {
     }
   }, [wordData]);
 
+  const showLevelUp = (newDifficulty: Difficulty) => {
+    if (newDifficulty !== difficulty) {
+      setLevelUpMsg(`🎉 Level Up! Now on ${newDifficulty.toUpperCase()}`);
+      Animated.sequence([
+        Animated.timing(levelUpAnim, { toValue: 1, duration: 400, useNativeDriver: true }),
+        Animated.delay(2000),
+        Animated.timing(levelUpAnim, { toValue: 0, duration: 400, useNativeDriver: true }),
+      ]).start(() => setLevelUpMsg(null));
+    }
+  };
+
   const handleSubmit = useCallback(async () => {
     if (!userInput.trim() || !wordData) return;
 
     const res = await check(userInput, wordData.word);
     if (!res) return;
 
-    // Agent logic: check if user typed the right word regardless of spell check
-    const isCorrect = res.correct && userInput.toLowerCase().trim() === wordData.word.toLowerCase();
+    const isCorrect =
+      res.correct && userInput.toLowerCase().trim() === wordData.word.toLowerCase();
 
     const finalResult: SpellCheckResult = { ...res, correct: isCorrect };
     setResult(finalResult);
@@ -66,16 +92,26 @@ export default function PracticeScreen() {
     if (isCorrect) {
       incrementScore();
       incrementStreak();
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 2500);
     } else {
       resetStreak();
       setHasError(true);
     }
 
-    await recordAttempt(isCorrect, difficulty);
+    // Record attempt and get new difficulty
+    const newDifficulty = await recordAttempt(isCorrect, difficulty);
+
+    // Sync difficulty to game store if it changed
+    if (newDifficulty !== difficulty) {
+      setDifficulty(newDifficulty);
+      showLevelUp(newDifficulty);
+    }
   }, [userInput, wordData, difficulty]);
 
   const handleNextWord = useCallback(async () => {
     setPhase('loading');
+    setShowConfetti(false);
     await loadNextWord(difficulty);
   }, [difficulty]);
 
@@ -83,17 +119,27 @@ export default function PracticeScreen() {
   if (phase === 'loading' || wordLoading) {
     return (
       <View style={styles.centeredScreen}>
-        <LoadingSpinner message="Loading next word..." />
+        <ActivityIndicator size="large" color={Colors.primary} />
+        <Text style={styles.loadingText}>Loading next word...</Text>
       </View>
     );
   }
 
-  // ─── Input phase ──────────────────────────────────────────
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+      {/* Confetti overlay */}
+      <ConfettiEffect trigger={showConfetti} />
+
+      {/* Level up banner */}
+      {levelUpMsg && (
+        <Animated.View style={[styles.levelUpBanner, { opacity: levelUpAnim }]}>
+          <Text style={styles.levelUpText}>{levelUpMsg}</Text>
+        </Animated.View>
+      )}
+
       <ScrollView
         style={styles.screen}
         contentContainerStyle={styles.content}
@@ -106,9 +152,29 @@ export default function PracticeScreen() {
           <DifficultyBadge difficulty={difficulty} size="sm" />
         </View>
 
+        {/* Score strip */}
+        <View style={styles.scoreStrip}>
+          <View style={styles.scorePill}>
+            <Text style={styles.scoreEmoji}>⭐</Text>
+            <Text style={styles.scoreValue}>{score}</Text>
+            <Text style={styles.scoreLabel}>Score</Text>
+          </View>
+          <View style={styles.scoreDivider} />
+          <View style={styles.scorePill}>
+            <Text style={styles.scoreEmoji}>🔥</Text>
+            <Text style={styles.scoreValue}>{streak}</Text>
+            <Text style={styles.scoreLabel}>Streak</Text>
+          </View>
+          <View style={styles.scoreDivider} />
+          <View style={styles.scorePill}>
+            <Text style={styles.scoreEmoji}>📈</Text>
+            <Text style={styles.scoreValue}>{sessionCorrect ?? 0}/5</Text>
+            <Text style={styles.scoreLabel}>To level up</Text>
+          </View>
+        </View>
+
         {phase === 'input' && wordData && (
           <>
-            {/* Mascot prompt */}
             <View style={styles.promptBox}>
               <Text style={styles.mascot}>🐻</Text>
               <Text style={styles.promptText}>
@@ -116,10 +182,8 @@ export default function PracticeScreen() {
               </Text>
             </View>
 
-            {/* Audio player */}
             <WordAudioPlayer word={wordData.word} />
 
-            {/* Input */}
             <SpellingInput
               value={userInput}
               onChange={setUserInput}
@@ -127,10 +191,8 @@ export default function PracticeScreen() {
               hasError={hasError}
             />
 
-            {/* Hint */}
             <HintReveal word={wordData.word} onHintUsed={useHint} />
 
-            {/* Submit */}
             <BigButton
               label="Check Spelling"
               emoji="✅"
@@ -139,7 +201,6 @@ export default function PracticeScreen() {
               disabled={!userInput.trim()}
             />
 
-            {/* Skip */}
             <BigButton
               label="Skip Word"
               variant="ghost"
@@ -150,7 +211,6 @@ export default function PracticeScreen() {
 
         {phase === 'result' && result && wordData && (
           <>
-            {/* Result card */}
             <ResultCard
               correct={result.correct}
               userInput={userInput}
@@ -159,13 +219,11 @@ export default function PracticeScreen() {
               suggestion={result.suggestion}
             />
 
-            {/* Next word */}
             <BigButton
               label={result.correct ? 'Next Word 🎯' : 'Try Another'}
               onPress={handleNextWord}
             />
 
-            {/* Try again same word */}
             {!result.correct && (
               <BigButton
                 label="Try This Word Again"
@@ -193,8 +251,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 12,
   },
-
+  loadingText: {
+    fontFamily: 'Nunito-SemiBold',
+    fontSize: 16,
+    color: Colors.textSecondary,
+  },
   topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -206,7 +269,29 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: Colors.textPrimary,
   },
-
+  scoreStrip: {
+    flexDirection: 'row',
+    backgroundColor: Colors.white,
+    borderRadius: 18,
+    padding: 14,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    borderWidth: 2,
+    borderColor: Colors.border,
+  },
+  scorePill: { alignItems: 'center', gap: 2, flex: 1 },
+  scoreEmoji: { fontSize: 18 },
+  scoreValue: {
+    fontFamily: 'Nunito-ExtraBold',
+    fontSize: 20,
+    color: Colors.textPrimary,
+  },
+  scoreLabel: {
+    fontFamily: 'Nunito-SemiBold',
+    fontSize: 11,
+    color: Colors.textMuted,
+  },
+  scoreDivider: { width: 1.5, height: 32, backgroundColor: Colors.border },
   promptBox: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -224,5 +309,26 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     flex: 1,
     lineHeight: 22,
+  },
+  levelUpBanner: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+    right: 20,
+    backgroundColor: Colors.success,
+    borderRadius: 16,
+    padding: 14,
+    alignItems: 'center',
+    zIndex: 100,
+    shadowColor: Colors.success,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
+    elevation: 10,
+  },
+  levelUpText: {
+    fontFamily: 'Nunito-ExtraBold',
+    fontSize: 18,
+    color: Colors.white,
   },
 });

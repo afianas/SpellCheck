@@ -6,6 +6,7 @@ export const useProgress = () => {
     progress,
     accuracy,
     isLoaded,
+    sessionCorrect,
     loadFromStorage,
     recordAttempt,
     resetProgress,
@@ -17,5 +18,12 @@ export const useProgress = () => {
     }
   }, []);
 
-  return { progress, accuracy, isLoaded, recordAttempt, resetProgress };
+  return {
+    progress,
+    accuracy,
+    isLoaded,
+    sessionCorrect: sessionCorrect ?? 0,
+    recordAttempt,
+    resetProgress,
+  };
 };

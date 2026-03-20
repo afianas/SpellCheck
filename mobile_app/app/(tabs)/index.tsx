@@ -11,11 +11,25 @@ import { Colors } from '../../constants/colors';
 import { WordOfTheDay } from '../../components/home/WordOfTheDay';
 import { useProgress } from '../../hooks/useProgress';
 import { getAccuracy } from '../../utils/storage';
+import { DIFFICULTY_CONFIG } from '../../constants/difficulty';
+
+const SPELLING_TIPS = [
+  "Break long words into smaller parts. Say each syllable out loud!",
+  "When in doubt, sound it out — say the word slowly letter by letter.",
+  "Think of a word you know that rhymes — it might have the same spelling pattern.",
+  "Some words just need to be memorised — practice makes perfect!",
+  "Try writing the word 3 times to help your brain remember it.",
+];
 
 export default function HomeScreen() {
   const router = useRouter();
   const { progress } = useProgress();
   const accuracy = getAccuracy(progress);
+  const diffConfig = DIFFICULTY_CONFIG[progress.currentDifficulty];
+
+  // Pick a tip based on day of year so it changes daily
+  const tipIndex = new Date().getDate() % SPELLING_TIPS.length;
+  const todaysTip = SPELLING_TIPS[tipIndex];
 
   return (
     <ScrollView
@@ -25,9 +39,9 @@ export default function HomeScreen() {
     >
       {/* Header */}
       <View style={styles.header}>
+        <Text style={styles.mascot}>🐻</Text>
         <Text style={styles.greeting}>Hey there! 👋</Text>
         <Text style={styles.subtitle}>Ready to practise spelling today?</Text>
-        <Text style={styles.mascot}>🐻</Text>
       </View>
 
       {/* Quick stats strip */}
@@ -48,6 +62,21 @@ export default function HomeScreen() {
         </View>
       </View>
 
+      {/* Current level card */}
+      <View style={[styles.levelCard, { borderColor: diffConfig.color + '55' }]}>
+        <Text style={styles.levelLabel}>Current Level</Text>
+        <View style={styles.levelRow}>
+          <Text style={styles.levelEmoji}>{diffConfig.emoji}</Text>
+          <Text style={[styles.levelName, { color: diffConfig.color }]}>
+            {diffConfig.label}
+          </Text>
+          <Text style={styles.levelStars}>{'⭐'.repeat(diffConfig.stars)}</Text>
+        </View>
+        <Text style={styles.levelHint}>
+          Get 5 correct answers in a row to level up!
+        </Text>
+      </View>
+
       {/* Word of the Day */}
       <WordOfTheDay />
 
@@ -60,12 +89,10 @@ export default function HomeScreen() {
         <Text style={styles.practiceBtnText}>✏️  Start Practising</Text>
       </TouchableOpacity>
 
-      {/* Tips */}
+      {/* Daily tip */}
       <View style={styles.tipCard}>
-        <Text style={styles.tipTitle}>💡 Spelling Tip</Text>
-        <Text style={styles.tipText}>
-          Break long words into smaller parts. Say each syllable out loud before you write it!
-        </Text>
+        <Text style={styles.tipTitle}>💡 Spelling Tip of the Day</Text>
+        <Text style={styles.tipText}>{todaysTip}</Text>
       </View>
     </ScrollView>
   );
@@ -73,10 +100,10 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: Colors.background },
-  content: { padding: 20, paddingTop: 60, gap: 20, paddingBottom: 40 },
+  content: { padding: 20, paddingTop: 60, gap: 16, paddingBottom: 40 },
 
   header: { alignItems: 'center', gap: 4, marginBottom: 4 },
-  mascot: { fontSize: 56, marginTop: 8 },
+  mascot: { fontSize: 56 },
   greeting: {
     fontFamily: 'Nunito-ExtraBold',
     fontSize: 32,
@@ -111,6 +138,35 @@ const styles = StyleSheet.create({
     color: Colors.textMuted,
   },
   divider: { width: 1.5, height: 32, backgroundColor: Colors.border },
+
+  levelCard: {
+    backgroundColor: Colors.white,
+    borderRadius: 20,
+    padding: 16,
+    gap: 6,
+    borderWidth: 2.5,
+  },
+  levelLabel: {
+    fontFamily: 'Nunito-SemiBold',
+    fontSize: 13,
+    color: Colors.textMuted,
+  },
+  levelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  levelEmoji: { fontSize: 24 },
+  levelName: {
+    fontFamily: 'Nunito-ExtraBold',
+    fontSize: 24,
+  },
+  levelStars: { fontSize: 16 },
+  levelHint: {
+    fontFamily: 'Nunito-Regular',
+    fontSize: 13,
+    color: Colors.textMuted,
+  },
 
   practiceBtn: {
     backgroundColor: Colors.primary,

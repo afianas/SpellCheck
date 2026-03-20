@@ -2,12 +2,15 @@ import { create } from 'zustand';
 import { Difficulty, GameSession } from '../types';
 
 interface GameStore extends GameSession {
+  sessionCorrectCount: number;
   setCurrentWord: (word: string) => void;
   setDifficulty: (difficulty: Difficulty) => void;
   incrementScore: () => void;
   incrementStreak: () => void;
   resetStreak: () => void;
   useHint: () => void;
+  incrementSessionCorrect: () => void;
+  resetSessionCorrect: () => void;
   resetSession: () => void;
 }
 
@@ -17,6 +20,7 @@ export const useGameStore = create<GameStore>((set) => ({
   score: 0,
   streak: 0,
   hintsUsed: 0,
+  sessionCorrectCount: 0,
 
   setCurrentWord: (word) => set({ currentWord: word }),
   setDifficulty: (difficulty) => set({ difficulty }),
@@ -24,6 +28,8 @@ export const useGameStore = create<GameStore>((set) => ({
   incrementStreak: () => set((s) => ({ streak: s.streak + 1 })),
   resetStreak: () => set({ streak: 0 }),
   useHint: () => set((s) => ({ hintsUsed: s.hintsUsed + 1 })),
+  incrementSessionCorrect: () => set((s) => ({ sessionCorrectCount: s.sessionCorrectCount + 1 })),
+  resetSessionCorrect: () => set({ sessionCorrectCount: 0 }),
   resetSession: () =>
-    set({ currentWord: '', score: 0, streak: 0, hintsUsed: 0, difficulty: 'easy' }),
+    set({ currentWord: '', score: 0, streak: 0, hintsUsed: 0, difficulty: 'easy', sessionCorrectCount: 0 }),
 }));

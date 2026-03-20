@@ -12,15 +12,35 @@ import { useAudio } from '../../hooks/useAudio';
 import { Colors } from '../../constants/colors';
 import { DifficultyBadge } from '../practice/DifficultyBadge';
 
+// Fallback words if API is unreachable
+const FALLBACK_WORDS: WordResponse[] = [
+  { word: 'friend', difficulty: 'easy', meaning: 'A person you like and trust.' },
+  { word: 'because', difficulty: 'medium', meaning: 'For the reason that.' },
+  { word: 'beautiful', difficulty: 'hard', meaning: 'Pleasing to the senses or mind.' },
+  { word: 'together', difficulty: 'medium', meaning: 'With each other.' },
+  { word: 'journey', difficulty: 'medium', meaning: 'An act of travelling from one place to another.' },
+  { word: 'knowledge', difficulty: 'hard', meaning: 'Facts, information, and skills acquired through experience.' },
+  { word: 'dream', difficulty: 'easy', meaning: 'A series of thoughts and images during sleep.' },
+];
+
 export const WordOfTheDay: React.FC = () => {
   const [wordData, setWordData] = useState<WordResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isOffline, setIsOffline] = useState(false);
   const { playWord, isPlaying } = useAudio();
 
   useEffect(() => {
     fetchWordOfDay()
-      .then(setWordData)
-      .catch(() => setWordData(null))
+      .then((data) => {
+        setWordData(data);
+        setIsOffline(false);
+      })
+      .catch(() => {
+        // Use a fallback word based on day of month
+        const fallback = FALLBACK_WORDS[new Date().getDate() % FALLBACK_WORDS.length];
+        setWordData(fallback);
+        setIsOffline(true);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -38,16 +58,23 @@ export const WordOfTheDay: React.FC = () => {
     <View style={styles.card}>
       <View style={styles.header}>
         <Text style={styles.title}>✨ Word of the Day</Text>
-        <DifficultyBadge difficulty={wordData.difficulty} size="sm" />
+        <View style={styles.headerRight}>
+          {isOffline && (
+            <Text style={styles.offlineBadge}>📴 offline</Text>
+          )}
+          <DifficultyBadge difficulty={wordData.difficulty} size="sm" />
+        </View>
       </View>
 
       <TouchableOpacity
-        onPress={() => playWord(wordData.word)}
+        onPress={() => !isOffline && playWord(wordData.word)}
         style={styles.wordRow}
-        activeOpacity={0.7}
+        activeOpacity={isOffline ? 1 : 0.7}
       >
         <Text style={styles.word}>{wordData.word}</Text>
-        <Text style={styles.speakIcon}>{isPlaying ? '🔊' : '🎧'}</Text>
+        {!isOffline && (
+          <Text style={styles.speakIcon}>{isPlaying ? '🔊' : '🎧'}</Text>
+        )}
       </TouchableOpacity>
 
       {wordData.meaning && (
@@ -82,10 +109,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
   title: {
     fontFamily: 'Nunito-ExtraBold',
     fontSize: 16,
     color: Colors.textSecondary,
+  },
+  offlineBadge: {
+    fontFamily: 'Nunito-SemiBold',
+    fontSize: 11,
+    color: Colors.textMuted,
   },
   wordRow: {
     flexDirection: 'row',
@@ -98,9 +135,7 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
     letterSpacing: 2,
   },
-  speakIcon: {
-    fontSize: 26,
-  },
+  speakIcon: { fontSize: 26 },
   meaning: {
     fontFamily: 'Nunito-SemiBold',
     fontSize: 15,
