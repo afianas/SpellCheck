@@ -55,17 +55,22 @@ export const useProgressStore = create<ProgressStore>((set, get) => ({
     const yesterday = getYesterday();
     const lastDate = current.lastPracticed;
 
+    // ── Daily streak logic ──────────────────────────────────
+    // Streak increments the first time you open and use the app each day
     let newStreak = current.streak;
-    if (correct) {
-      if (lastDate === today) {
-        newStreak = current.streak;
-      } else if (lastDate === yesterday) {
+    if (lastDate !== today) {
+      // First attempt of today — regardless of correct or wrong
+      if (lastDate === yesterday) {
+        // Practiced yesterday — extend streak
         newStreak = current.streak + 1;
       } else {
+        // Gap of more than 1 day or first time ever — start at 1
         newStreak = 1;
       }
     }
+    // Same day — streak stays the same
 
+    // ── Difficulty auto-advancement ─────────────────────────
     const newSessionCorrect = correct ? get().sessionCorrect + 1 : get().sessionCorrect;
     let newDifficulty: Difficulty = difficulty;
 
@@ -82,11 +87,14 @@ export const useProgressStore = create<ProgressStore>((set, get) => ({
       correctCount: current.correctCount + (correct ? 1 : 0),
       streak: newStreak,
       currentDifficulty: newDifficulty,
+      // Always update lastPracticed so tomorrow's streak works correctly
       lastPracticed: today,
     };
 
     await saveProgress(updated);
     set({ progress: updated, accuracy: getAccuracy(updated) });
+
+    if (__DEV__) console.log(`[Progress] streak: ${newStreak}, lastPracticed: ${today}`);
 
     return newDifficulty;
   },

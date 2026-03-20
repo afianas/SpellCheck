@@ -20,7 +20,7 @@ import { WordAudioPlayer } from '../../components/practice/WordAudioPlayer';
 import { SpellingInput } from '../../components/practice/SpellingInput';
 import { HintReveal } from '../../components/practice/HintReveal';
 import { DifficultyBadge } from '../../components/practice/DifficultyBadge';
-import { DifficultySelector } from '../../components/practice/DifficultySelector';
+import { DifficultySelector } from '../../components/practice/Difficultyselector';
 import { ResultCard } from '../../components/feedback/ResultCard';
 import { ConfettiEffect } from '../../components/feedback/ConfettiEffect';
 import { BigButton } from '../../components/common/BigButton';
@@ -181,7 +181,7 @@ export default function PracticeScreen() {
       >
         {/* Top bar */}
         <View style={styles.topBar}>
-          <Text style={styles.screenTitle}>✏️ Spelling Practice</Text>
+          <Text style={styles.screenTitle}> ✏️ Practice</Text>
           <TouchableOpacity
             onPress={() => setShowDifficultyModal(true)}
             activeOpacity={0.8}

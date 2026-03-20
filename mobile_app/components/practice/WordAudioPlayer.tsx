@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -15,16 +15,6 @@ interface Props {
 
 export const WordAudioPlayer: React.FC<Props> = ({ word }) => {
   const { playWord, isPlaying, isLoading, stop } = useAudio();
-
-  // Auto-play when word changes
-  useEffect(() => {
-    if (word) {
-      playWord(word, false);
-    }
-    return () => {
-      stop();
-    };
-  }, [word]);
 
   return (
     <View style={styles.container}>
