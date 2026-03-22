@@ -18,7 +18,10 @@
       "adaptiveIcon": {
         "backgroundColor": "#FFB830"
       },
-      "package": "com.yourname.spellingtutor"
+      "package": "com.yourname.spellingtutor",
+      "permissions": [
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "plugins": [
       "expo-router",
@@ -33,6 +36,12 @@
     "scheme": "spellingtutor",
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "bb76c807-00da-4957-873e-6fe09540f10f"
+      }
     }
   }
 }
