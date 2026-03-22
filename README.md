@@ -114,7 +114,7 @@ AI-Spelling-Tutor/
 ---
 ```
 ## DEMO
- https://drive.google.com/file/d/1MT9RB3m0YGTVKr0dF5mG0qanV6kbEai8/view?usp=sharing 
+ https://drive.google.com/file/d/1O8GErXYfHnrNbjWfsZ2txzJcwi-bJ9SW/view?usp=sharing  
 ## 🚀 Getting Started
 
 ### 1. Clone the repo
