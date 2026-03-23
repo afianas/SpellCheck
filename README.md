@@ -114,7 +114,17 @@ AI-Spelling-Tutor/
 ---
 ```
 ## DEMO
- https://drive.google.com/file/d/1O8GErXYfHnrNbjWfsZ2txzJcwi-bJ9SW/view?usp=sharing  
+ https://drive.google.com/file/d/1O8GErXYfHnrNbjWfsZ2txzJcwi-bJ9SW/view?usp=sharing 
+ 
+## Screenshots
+
+<img width="716" height="1600" alt="image" src="https://github.com/user-attachments/assets/0a3ba18d-6e3e-4393-8030-fb1e35a1ab04" />
+<img width="716" height="1600" alt="image" src="https://github.com/user-attachments/assets/480be5ac-f13a-4a06-b0b4-87b43e4d4fd0" />
+<img width="716" height="1600" alt="image" src="https://github.com/user-attachments/assets/48af6786-b456-4ad0-8567-10d2d0904158" />
+<img width="716" height="1600" alt="image" src="https://github.com/user-attachments/assets/cbf57e96-4ace-4326-8e31-db17c83556a0" />
+<img width="716" height="1600" alt="image" src="https://github.com/user-attachments/assets/5a3f8be9-eaec-44ef-bf4b-4ceb2cab65e0" />
+<img width="716" height="1600" alt="image" src="https://github.com/user-attachments/assets/e42f9e06-92ff-44c4-a06d-1a460dc2bac4" />
+ 
 ## 🚀 Getting Started
 
 ### 1. Clone the repo
