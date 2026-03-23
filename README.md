@@ -113,61 +113,57 @@ AI-Spelling-Tutor/
 
 ---
 ```
-## DEMO
- https://drive.google.com/file/d/1O8GErXYfHnrNbjWfsZ2txzJcwi-bJ9SW/view?usp=sharing 
+## 🎥 Demo  
+[Watch Demo](https://drive.google.com/file/d/1O8GErXYfHnrNbjWfsZ2txzJcwi-bJ9SW/view?usp=sharing)
 
-## SCREENSHOTS
+---
+
+## 📱 Screenshots
+
 <div align="center">
 
-<h2>📱 App Screenshots </h2>
+<h3>App Screens</h3>
 
-<div style="
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-  max-width: 900px;
-  margin: auto;
-">
+<table>
+<tr>
+<td align="center">
+  <img src="https://github.com/user-attachments/assets/0a3ba18d-6e3e-4393-8030-fb1e35a1ab04" width="220"><br>
+  <b>Practice Screen</b>
+</td>
 
-  <div>
-    <img src="https://github.com/user-attachments/assets/0a3ba18d-6e3e-4393-8030-fb1e35a1ab04"
-         style="width:100%; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-    <p><b>Practice Screen</b></p>
-  </div>
+<td align="center">
+  <img src="https://github.com/user-attachments/assets/480be5ac-f13a-4a06-b0b4-87b43e4d4fd0" width="220"><br>
+  <b>Home Screen</b>
+</td>
 
-  <div>
-    <img src="https://github.com/user-attachments/assets/480be5ac-f13a-4a06-b0b4-87b43e4d4fd0"
-         style="width:100%; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-    <p><b>Home Screen</b></p>
-  </div>
+<td align="center">
+  <img src="https://github.com/user-attachments/assets/48af6786-b456-4ad0-8567-10d2d0904158" width="220"><br>
+  <b>Progress Screen</b>
+</td>
+</tr>
 
-  <div>
-    <img src="https://github.com/user-attachments/assets/48af6786-b456-4ad0-8567-10d2d0904158"
-         style="width:100%; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-    <p><b>Progress Screen</b></p>
-  </div>
+<tr>
+<td align="center">
+  <img src="https://github.com/user-attachments/assets/cbf57e96-4ace-4326-8e31-db17c83556a0" width="220"><br>
+  <b>Gameplay</b>
+</td>
 
-  <div>
-    <img src="https://github.com/user-attachments/assets/cbf57e96-4ace-4326-8e31-db17c83556a0"
-         style="width:100%; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-    <p><b>Gameplay</b></p>
-  </div>
+<td align="center">
+  <img src="https://github.com/user-attachments/assets/5a3f8be9-aeec-44ef-bf4b-4ceb2cab65e0" width="220"><br>
+  <b>Results</b>
+</td>
 
-  <div>
-    <img src="https://github.com/user-attachments/assets/5a3f8be9-aeec-44ef-bf4b-4ceb2cab65e0"
-         style="width:100%; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-    <p><b>Results</b></p>
-  </div>
-
-  <div>
-    <img src="https://github.com/user-attachments/assets/e42f9e06-92ff-44c4-a06d-1a460dc2bac4"
-         style="width:100%; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
-    <p><b>Stats</b></p>
-  </div>
+<td align="center">
+  <img src="https://github.com/user-attachments/assets/e42f9e06-92ff-44c4-a06d-1a460dc2bac4" width="220"><br>
+  <b>Stats</b>
+</td>
+</tr>
+</table>
 
 </div>
 
-</div>
+---
+
 ## 🚀 Getting Started
 
 ### 1. Clone the repo
