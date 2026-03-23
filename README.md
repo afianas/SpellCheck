@@ -120,42 +120,43 @@ AI-Spelling-Tutor/
 
 ## 📱 Screenshots
 
-<div align="center">
+## 📱 App Screens  
 
-<h3>App Screens</h3>
+<div align="center">
 
 <table>
 <tr>
 <td align="center">
-  <img src="https://github.com/user-attachments/assets/0a3ba18d-6e3e-4393-8030-fb1e35a1ab04" width="220"><br>
-  <b>Practice Screen</b>
+  <img src="https://github.com/user-attachments/assets/0a3ba18d-6e3e-4393-8030-fb1e35a1ab04" width="220"/><br>
+  <sub><b>Practice Screen</b></sub>
 </td>
 
 <td align="center">
-  <img src="https://github.com/user-attachments/assets/480be5ac-f13a-4a06-b0b4-87b43e4d4fd0" width="220"><br>
-  <b>Home Screen</b>
+  <img src="https://github.com/user-attachments/assets/480be5ac-f13a-4a06-b0b4-87b43e4d4fd0" width="220"/><br>
+  <sub><b>Home Screen</b></sub>
 </td>
 
 <td align="center">
-  <img src="https://github.com/user-attachments/assets/48af6786-b456-4ad0-8567-10d2d0904158" width="220"><br>
-  <b>Progress Screen</b>
+  <img src="https://github.com/user-attachments/assets/48af6786-b456-4ad0-8567-10d2d0904158" width="220"/><br>
+  <sub><b>Gameplay (Typing & Hint)</b></sub>
 </td>
 </tr>
 
 <tr>
 <td align="center">
-  <img src="https://github.com/user-attachments/assets/cbf57e96-4ace-4326-8e31-db17c83556a0" width="220"><br>
-  <b>Gameplay</b>
+  <img src="https://github.com/user-attachments/assets/cbf57e96-4ace-4326-8e31-db17c83556a0" width="220"/><br>
+  <sub><b>Error Feedback</b></sub>
 </td>
 
 <td align="center">
-  <img src="https://github.com/user-attachments/assets/5a3f8be9-aeec-44ef-bf4b-4ceb2cab65e0" width="220"><br>
-  <b>Results</b>
+  <img src="https://github.com/user-attachments/assets/327a317c-e972-4cda-aaa3-061cfe18a1ad" width="220"/><br> 
+
+  <sub><b>Results Screen</b></sub>
 </td>
 
 <td align="center">
-  <img src="https://github.com/user-attachments/assets/e42f9e06-92ff-44c4-a06d-1a460dc2bac4" width="220"><br>
-  <b>Stats</b>
+  <img src="https://github.com/user-attachments/assets/e42f9e06-92ff-44c4-a06d-1a460dc2bac4" width="220"/><br>
+  <sub><b>Performance Stats</b></sub>
 </td>
 </tr>
 </table>
