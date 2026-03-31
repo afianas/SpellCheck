@@ -85,52 +85,8 @@ AI-Spelling-Tutor/
 ```
 
 ---
-## 📱 App Screens  
 
-<div align="center">
-
-<table>
-<tr>
-<td align="center">
-  <img src="https://github.com/user-attachments/assets/0a3ba18d-6e3e-4393-8030-fb1e35a1ab04" width="220"/><br>
-  <sub><b>Practice Screen</b></sub>
-</td>
-
-<td align="center">
-  <img src="https://github.com/user-attachments/assets/480be5ac-f13a-4a06-b0b4-87b43e4d4fd0" width="220"/><br>
-  <sub><b>Home Screen</b></sub>
-</td>
-
-<td align="center">
-  <img src="https://github.com/user-attachments/assets/48af6786-b456-4ad0-8567-10d2d0904158" width="220"/><br>
-  <sub><b>Gameplay (Typing & Hint)</b></sub>
-</td>
-</tr>
-
-<tr>
-<td align="center">
-  <img src="https://github.com/user-attachments/assets/cbf57e96-4ace-4326-8e31-db17c83556a0" width="220"/><br>
-  <sub><b>Error Feedback</b></sub>
-</td>
-
-<td align="center">
-  <img src="https://github.com/user-attachments/assets/327a317c-e972-4cda-aaa3-061cfe18a1ad" width="220"/><br> 
-
-  <sub><b>Results Screen</b></sub>
-</td>
-
-<td align="center">
-  <img src="https://github.com/user-attachments/assets/e42f9e06-92ff-44c4-a06d-1a460dc2bac4" width="220"/><br>
-  <sub><b>Performance Stats</b></sub>
-</td>
-</tr>
-</table>
-
-</div>
-
----
-
-## 📽 Preview & Demo
+## 📽 DEMO
 [Watch the Application Demo](https://drive.google.com/file/d/1O8GErXYfHnrNbjWfsZ2txzJcwi-bJ9SW/view?usp=sharing)
 
 ---
@@ -214,11 +170,14 @@ npx expo start
 **The Next Step**: Integration of the **BEA 2019 Shared Task** dataset or the **GitHub Typo Corpus** to fine-tune the DistilBERT layer on actual human behavioral patterns.
 
 ### 3. Deployment Optimization
-**Performance**: To achieve sub-100ms inference on the neural layer for real-time tutoring, the next phase involves exporting the PyTorch DistilBERT model to **ONNX Runtime** with **INT8 Quantization**, allowing for CPU-optimized high-throughput deployment on Render or AWS Lambda.
+**Performance**: To achieve sub-100ms inference on the neural layer for real-time tutoring, the next phase involves exporting the DistilBERT model to **ONNX Runtime** with **INT8 Quantization**, allowing for CPU-optimized high-throughput deployment on Render or AWS Lambda.
 
 ---
 
 ## 📄 License & Contact
 Distributed under the MIT License.
-**Dev**: [Your Name/Github] - [Your Email/Portfolio Link]
-**Project Link**: [https://github.com/afianas/SpellCheck](https://github.com/afianas/SpellCheck)
+
+
+
+
+
