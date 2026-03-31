@@ -1,6 +1,6 @@
-# 🐻 AI Spelling Tutor: A Hybrid Neural-Symbolic Pedagogical System
+# 🐻 AI Spelling Tutor: A Pedagogical System
 
-**A production-grade spelling correction and error-categorization engine designed for adaptive learning.** 
+**A spelling correction and error-categorization engine designed for adaptive learning.** 
 This project goes beyond simple autocorrect by utilizing a multi-layered inference pipeline to identify *why* a student made a mistake, providing the granular feedback necessary for effective language acquisition.
 
 ---
@@ -15,6 +15,52 @@ This project goes beyond simple autocorrect by utilizing a multi-layered inferen
 - 🎉 Confetti animation on correct answers
 
 ---
+## 📱 App Screens  
+
+<div align="center">
+<table>
+<tr>
+<td align="center">
+  <img src="https://github.com/user-attachments/assets/0a3ba18d-6e3e-4393-8030-fb1e35a1ab04" width="220"><br>
+  <b>Practice Screen</b><br>
+  <sub>Listen and spell the word</sub>
+</td>
+
+<td align="center">
+  <img src="https://github.com/user-attachments/assets/480be5ac-f13a-4a06-b0b4-87b43e4d4fd0" width="220"><br>
+  <b>Home Screen</b><br>
+  <sub>Dashboard and Word of the Day</sub>
+</td>
+
+<td align="center">
+  <img src="https://github.com/user-attachments/assets/48af6786-b456-4ad0-8567-10d2d0904158" width="220"><br>
+  <b>Spelling Input</b><br>
+  <sub>Typing with active hints</sub>
+</td>
+</tr>
+
+<tr>
+<td align="center">
+  <img src="https://github.com/user-attachments/assets/cbf57e96-4ace-4326-8e31-db17c83556a0" width="220"><br>
+  <b>Error Feedback</b><br>
+  <sub>Analysis of a 'Tricky Vowel' mistake</sub>
+</td>
+
+<td align="center">
+  <img src="https://github.com/user-attachments/assets/327a317c-e972-4cda-aaa3-061cfe18a1ad" width="220"><br>
+  <b>Results Screen</b><br>
+  <sub>Summary after a practice set</sub>
+</td>
+
+<td align="center">
+  <img src="https://github.com/user-attachments/assets/e42f9e06-92ff-44c4-a06d-1a460dc2bac4" width="220"><br>
+  <b>Performance Stats</b><br>
+  <sub>Streak and accuracy tracking</sub>
+</td>
+</tr>
+</table>
+</div>
+
 
 ## 🗺 App Flow
 <img width="875" height="697" alt="Screenshot 2026-03-11 223937" src="https://github.com/user-attachments/assets/4334d518-2002-4e25-b0e6-f675b7a2a8e3" />
