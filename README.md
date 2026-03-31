@@ -1,53 +1,26 @@
+# 🐻 AI Spelling Tutor: A Hybrid Neural-Symbolic Pedagogical System
 
-# 🐻 AI Spelling Tutor
-
-An AI-powered mobile spelling tutor app built with React Native and Expo, backed by a FastAPI server running a hybrid DistilBERT + character-level inference pipeline.
+**A production-grade spelling correction and error-categorization engine designed for adaptive learning.** 
+This project goes beyond simple autocorrect by utilizing a multi-layered inference pipeline to identify *why* a student made a mistake, providing the granular feedback necessary for effective language acquisition.
 
 ---
 
-## 📱 Features
+## 🚀 Key Features
 
-- 🎧 Listen to words spoken aloud via text-to-speech
-- ✅ Real-time spelling error detection across 4 error types
-- 📈 Adaptive difficulty — auto-advances from Easy → Medium → Hard
-- 🔥 Daily streak tracking
-- 💡 Hints system
-- 📊 Progress tracking with accuracy stats
-- ✨ Word of the Day with offline fallback
+- 🎧 **Adaptive TTS**: dynamic text-to-speech generation via gTTS for auditory-based practice.
+- ✅ **Hybrid Correction**: Combines the precision of deterministic lookups with the "intuition" of Transformer-based models.
+- 📊 **Pedagogical Error ID**: Categorizes mistakes into specific types (e.g., Vowel Confusion, Letter Swaps) to track student progress.
+- 🔥 **Gamified Learning**: Streak tracking, confetti animations, and adaptive difficulty levels (Easy → Medium → Hard).
+- ✨ **Word of the Day**: Daily focused practice with offline fallbacks- ✨ Word of the Day with offline fallback
 - 🎉 Confetti animation on correct answers
 
 ---
 
-## 🧠 Tech Stack
-
-### Mobile
-- React Native + Expo SDK 54
-- TypeScript
-- Expo Router (file-based navigation)
-- Zustand (state management)
-- Axios
-- expo-av (audio)
-- AsyncStorage (local persistence)
-
-### Backend
-- Python 3.12
-- FastAPI + Uvicorn
-- pyttsx3 (text-to-speech)
-- Ngrok (dev tunneling)
-
-### AI / ML
-- DistilBERT (HuggingFace Transformers) — context-aware spelling classification
-- PyTorch — model inference
-- Scikit-learn Logistic Regression — character-level error type classification
-- CountVectorizer with char n-grams — feature extraction
-- Custom hybrid pipeline: dictionary → common misspellings → BERT → char model
-
----
 ## 🗺 App Flow
 <img width="875" height="697" alt="Screenshot 2026-03-11 223937" src="https://github.com/user-attachments/assets/4334d518-2002-4e25-b0e6-f675b7a2a8e3" />
 
 
-## 🏗 Architecture
+## 🏗 Architecture Diagram
 
 <img width="877" height="567" alt="Screenshot 2026-03-11 223843" src="https://github.com/user-attachments/assets/bd62b093-0402-4e50-9ea0-653376747141" />
 
@@ -55,7 +28,6 @@ An AI-powered mobile spelling tutor app built with React Native and Expo, backed
 ## 🗂 Project Structure
 
 ```
-
 AI-Spelling-Tutor/
 ├── api_server.py               ← FastAPI backend entry point
 ├── requirements.txt
@@ -110,131 +82,99 @@ AI-Spelling-Tutor/
 │       └── fonts/              ← Nunito font family
 └── notebooks/
     └── spelling.ipynb          ← Model training notebook
+```
 
 ---
-```
-## DEMO
- https://drive.google.com/file/d/1O8GErXYfHnrNbjWfsZ2txzJcwi-bJ9SW/view?usp=sharing  
-## 🚀 Getting Started
 
-### 1. Clone the repo
+## 📽 DEMO
+[Watch the Application Demo](https://drive.google.com/file/d/1O8GErXYfHnrNbjWfsZ2txzJcwi-bJ9SW/view?usp=sharing)
 
+---
+
+## 🛠 Tech Stack
+
+| Component | Technology |
+| :--- | :--- |
+| **Backend** | Python 3.12, FastAPI, Uvicorn |
+| **Deep Learning** | PyTorch, HuggingFace Transformers (DistilBERT) |
+| **Classical ML** | Scikit-learn, Logistic Regression (Character N-grams) |
+| **Mobile** | React Native, Expo SDK 54, TypeScript, Zustand |
+| **Audio** | gTTS (Google Text-to-Speech), expo-av |
+| **Infrastructure** | Render (Deployment), Ngrok (Dev Tunneling) |
+
+---
+
+## 🧠 Architecture & Logic
+
+The system employs a **Waterfall Hybrid Inference Pipeline** to balance latency, accuracy, and interpretability:
+
+1.  **Symbolic layer (Dictionary)**: Instant O(1) check against a curated word bank for exact matches.
+2.  **Override Layer (Common Misspellings)**: A deterministic map for high-frequency linguistic "traps."
+3.  **Neural Layer (DistilBERT)**: Evaluates the "plausibility" of the word. Trained on balanced synthetic data to identify valid English-like structures.
+4.  **Statistical Layer (Char-level LogReg)**: A character-level n-gram (2-5 grams) Logistic Regression model that performs the final binary classification and, if incorrect, routes to a multi-class classifier to identify the **Error Type**.
+
+### Error Classification Types
+- `letter_drop`: Missing characters (e.g., "hapening" instead of "happening").
+- `letter_swap`: Transparent transpositions (e.g., "reiceve").
+- `extra_letter`: Redundant characters.
+- `vowel_confusion`: Phonetically similar vowel swaps (e.g., "separgate").
+
+---
+
+## 🧪 Machine Learning Deep Dive
+
+### Synthetic Data Generation
+To train a robust classifier without a proprietary dataset, I developed a custom synthetic error generator that simulates common human cognitive biases in spelling:
+- **Phonetic Vowel Confusion**: Targeted swaps of `a, e, i, o, u`.
+- **Typographical Swaps**: Simulating keyboard adjacent or cognitive order errors.
+- **Random Drops/Injections**: Simulating fast-typing or phonetic omission.
+
+### Model Evaluation
+For the character-level classifier, **Macro F1-score** was chosen as the primary metric (achieving ~0.71). 
+> **Why Macro F1?** Our dataset (Synthetic vs. Correct) is inherently imbalanced. Macro F1 ensures we treat the 'Incorrect' class (the minority) with equal importance to the 'Correct' class, preventing the model from over-biasing toward a 1.0 accuracy score by simply guessing "Correct" every time.
+
+---
+
+## 🏗 Installation
+
+### 1. Backend Setup
 ```bash
-git clone https://github.com/afianas/SpellCheck.git
-cd AI-Spelling-Tutor
-```
-
-### 2. Set up Python environment
-
-```bash
+# Set up environment
 python -m venv .venv
-.venv\Scripts\Activate.ps1       # Windows
-# source .venv/bin/activate      # Mac/Linux
+source .venv/bin/activate  # Or .venv\Scripts\Activate.ps1 on Windows
 
+# Install dependencies
 pip install -r requirements.txt
+
+# Launch FastAPI
+uvicorn api_server:app --host 0.0.0.0 --port 8000
 ```
 
-### 3. Start the backend
-
-```bash
-uvicorn api_server:app --host 0.0.0.0 --port 8000 --reload
-```
-
-### 4. Start ngrok tunnel
-
-```bash
-ngrok http 8000
-```
-
-Copy the ngrok URL (e.g. `https://xxxx.ngrok-free.app`)
-
-### 5. Set up mobile app environment
-
+### 2. Mobile Setup
 ```bash
 cd mobile_app
-```
-
-Create a `.env` file:
-```
-EXPO_PUBLIC_API_URL=https://xxxx.ngrok-free.app
-```
-
-### 6. Install dependencies
-
-```bash
 npm install --legacy-peer-deps
+npx expo start
 ```
 
-### 7. Add fonts
+---
 
-Download [Nunito](https://fonts.google.com/specimen/Nunito) and place these files in `mobile_app/assets/fonts/`:
-- `Nunito-Regular.ttf`
-- `Nunito-SemiBold.ttf`
-- `Nunito-Bold.ttf`
-- `Nunito-ExtraBold.ttf`
+## 🎓 Lessons Learned & Future Work
 
-### 8. Start Expo
+### 1. Tokenizer Constraints
+**The Challenge**: Standard Sub-word tokenizers (like BERT's WordPiece) often obscure spelling errors by breaking misspelled words into nonsensical sub-tokens.
+**The Solution**: Future iterations will explore **Character-BERT** or **ByT5**, which operate directly on raw bytes/characters, making them significantly more robust for character-level tasks.
 
-```bash
-npx expo start --clear
-```
+### 2. Data Realism
+**The Challenge**: Synthetic data, while useful for bootstrapping, lacks the nuance of real student errors.
+**The Next Step**: Integration of the **BEA 2019 Shared Task** dataset or the **GitHub Typo Corpus** to fine-tune the DistilBERT layer on actual human behavioral patterns.
 
-Scan the QR code with Expo Go on your phone.
+### 3. Deployment Optimization
+**Performance**: To achieve sub-100ms inference on the neural layer for real-time tutoring, the next phase involves exporting the PyTorch DistilBERT model to **ONNX Runtime** with **INT8 Quantization**, allowing for CPU-optimized high-throughput deployment on Render or AWS Lambda.
 
 ---
 
-## 📡 API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/health` | Health check |
-| POST | `/spellcheck` | Check spelling of a word |
-| GET | `/word?difficulty=easy` | Get a random word |
-| GET | `/word-of-day` | Get word of the day |
-| GET | `/speak?word=hello` | Get TTS audio for a word |
-
----
-
-## 🎮 How It Works
-
-1. App fetches a word from the backend based on current difficulty
-2. Word is spoken aloud via TTS through the `/speak` endpoint
-3. User types what they heard
-4. Backend runs the hybrid inference pipeline:
-   - Dictionary lookup first
-   - Common misspelling check
-   - DistilBERT transformer classification
-   - Character-level error type detection
-5. Result returned with error type and suggestion
-6. Progress saved locally — streak updates daily, difficulty advances after 5 correct answers
-
----
-
-## 📊 Difficulty Progression
-
-| Level | Words | Advances After |
-|-------|-------|----------------|
-| 🌱 Easy | 4 or fewer letters | 5 correct answers |
-| 🌟 Medium | 5–7 letters | 5 correct answers |
-| 🔥 Hard | 8+ letters | stays at Hard |
-
----
-
-## ⚠️ Known Limitations
-
-- Ngrok free tier URLs expire — update `.env` each session
-- TTS uses pyttsx3 which requires the backend to be running
-- No cloud sync — progress is stored on-device only
-
----
-
-## 📄 License
-
-MIT
-```
-
-The mobile application communicates with the backend AI models via API.
-
-
-
-
+## 📄 License & Contact
+Distributed under the MIT License.
+**Dev**: [Your Name/Github] - [Your Email/Portfolio Link]
+**Project Link**: [https://github.com/afianas/SpellCheck](https://github.com/afianas/SpellCheck)

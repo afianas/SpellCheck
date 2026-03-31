@@ -1,22 +1,54 @@
-# Python
-__pycache__/
-*.pyc
-
-# Virtual environments
+# =========================
+# Python virtual environments
+# =========================
 venv/
 .venv/
+env/
+ENV/
+
+# =========================
+# Python cache / compiled files
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# =========================
+# Jupyter Notebook checkpoints
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# OS / Editor files
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Model / training artifacts (optional)
+# Uncomment if models are too large
+# =========================
+# models/**/*.bin
+# models/**/*.pt
+# models/**/*.safetensors
+
+# =========================
+# Streamlit cache
+# =========================
+.streamlit/
+
+# =========================
+# HuggingFace cache (optional)
+# =========================
+.cache/
 
 # Large ML models
 distilbert_spelling/
-*.safetensors
-*.bin
 
-# OS
-.DS_Store
-Thumbs.db
-
-# React Native
-mobile_app/node_modules
-mobile_app/.expo
-mobile_app/.expo-shared
-mobile_app/dist
