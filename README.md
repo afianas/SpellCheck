@@ -11,7 +11,7 @@ This project goes beyond simple autocorrect by utilizing a multi-layered inferen
 - ✅ **Hybrid Correction**: Combines the precision of deterministic lookups with the "intuition" of Transformer-based models.
 - 📊 **Pedagogical Error ID**: Categorizes mistakes into specific types (e.g., Vowel Confusion, Letter Swaps) to track student progress.
 - 🔥 **Gamified Learning**: Streak tracking, confetti animations, and adaptive difficulty levels (Easy → Medium → Hard).
-- ✨ **Word of the Day**: Daily focused practice with offline fallbacks- ✨ Word of the Day with offline fallback
+- ✨ **Word of the Day**: Daily focused practice with offline fallbacks.
 - 🎉 Confetti animation on correct answers
 
 ---
