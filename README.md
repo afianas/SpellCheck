@@ -26,19 +26,19 @@ This project goes beyond simple autocorrect by utilizing a multi-layered inferen
 <table>
 <tr>
 <td align="center">
-  <img src="https://github.com/user-attachments/assets/0a3ba18d-6e3e-4393-8030-fb1e35a1ab04" width="220"><br>
+  <img src="https://github.com/user-attachments/assets/0a3ba18d-6e3e-4393-8030-fb1e35a1ab04" width="180"><br>
   <b>Practice Screen</b><br>
   <sub>Listen and spell the word</sub>
 </td>
 
 <td align="center">
-  <img src="https://github.com/user-attachments/assets/480be5ac-f13a-4a06-b0b4-87b43e4d4fd0" width="220"><br>
+  <img src="https://github.com/user-attachments/assets/480be5ac-f13a-4a06-b0b4-87b43e4d4fd0" width="180"><br>
   <b>Home Screen</b><br>
   <sub>Dashboard and Word of the Day</sub>
 </td>
 
 <td align="center">
-  <img src="https://github.com/user-attachments/assets/48af6786-b456-4ad0-8567-10d2d0904158" width="220"><br>
+  <img src="https://github.com/user-attachments/assets/48af6786-b456-4ad0-8567-10d2d0904158" width="180"><br>
   <b>Spelling Input</b><br>
   <sub>Typing with active hints</sub>
 </td>
@@ -46,25 +46,57 @@ This project goes beyond simple autocorrect by utilizing a multi-layered inferen
 
 <tr>
 <td align="center">
-  <img src="https://github.com/user-attachments/assets/cbf57e96-4ace-4326-8e31-db17c83556a0" width="220"><br>
+  <img src="https://github.com/user-attachments/assets/cbf57e96-4ace-4326-8e31-db17c83556a0" width="180"><br>
   <b>Error Feedback</b><br>
   <sub>Analysis of a 'Tricky Vowel' mistake</sub>
 </td>
 
 <td align="center">
-  <img src="https://github.com/user-attachments/assets/327a317c-e972-4cda-aaa3-061cfe18a1ad" width="220"><br>
+  <img src="https://github.com/user-attachments/assets/327a317c-e972-4cda-aaa3-061cfe18a1ad" width="180"><br>
   <b>Results Screen</b><br>
   <sub>Summary after a practice set</sub>
 </td>
 
 <td align="center">
-  <img src="https://github.com/user-attachments/assets/e42f9e06-92ff-44c4-a06d-1a460dc2bac4" width="220"><br>
+  <img src="https://github.com/user-attachments/assets/e42f9e06-92ff-44c4-a06d-1a460dc2bac4" width="180"><br>
   <b>Performance Stats</b><br>
   <sub>Streak and accuracy tracking</sub>
 </td>
 </tr>
 </table>
 </div>
+
+
+## 🗺 App Flow
+
+```mermaid
+graph TD
+    Start([Start]) --> Home[Home / Dashboard]
+    Home --> Practice[Practice Selection]
+    Practice --> Session[Start Session]
+    Session --> Audio[Listen] --> Input[Type] --> Check{Check}
+    Check -->|Correct| Success[Success & Streak]
+    Check -->|Wrong| Feedback[Error ID & Tip]
+    Success --> Next[Next Word / Stats]
+    Feedback --> Session
+    Next --> Home
+```
+
+
+## 🏗 Architecture Diagram
+
+```mermaid
+graph LR
+    Input([User Input]) --> Pipeline
+    subgraph Pipeline [Hybrid Waterfall Inference]
+        direction LR
+        S{Symbolic} --> O{Override} --> N{Neural} --> St{Statistical}
+    end
+    S -->|Match| OK([Correct])
+    O -->|Match| OK
+    St -->|Verdict| OK
+    St -->|Error| Feed([Pedagogical Feedback])
+```
 
 
 
