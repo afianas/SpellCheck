@@ -1,4 +1,4 @@
-# 🐻 AI Spelling Tutor: A Pedagogical System
+# 🐻 AI Spelling Tutor
 
 **A spelling correction and error-categorization engine designed for adaptive learning.** 
 This project goes beyond simple autocorrect by utilizing a multi-layered inference pipeline to identify *why* a student made a mistake, providing the granular feedback necessary for effective language acquisition.
@@ -13,6 +13,11 @@ This project goes beyond simple autocorrect by utilizing a multi-layered inferen
 - 🔥 **Gamified Learning**: Streak tracking, confetti animations, and adaptive difficulty levels (Easy → Medium → Hard).
 - ✨ **Word of the Day**: Daily focused practice with offline fallbacks- ✨ Word of the Day with offline fallback
 - 🎉 Confetti animation on correct answers
+
+---
+
+## 📽 DEMO
+[Watch the Application Demo](https://drive.google.com/file/d/1O8GErXYfHnrNbjWfsZ2txzJcwi-bJ9SW/view?usp=sharing)
 
 ---
 ## 📱 App Screens  
@@ -61,14 +66,6 @@ This project goes beyond simple autocorrect by utilizing a multi-layered inferen
 </table>
 </div>
 
-
-## 🗺 App Flow
-<img width="875" height="697" alt="Screenshot 2026-03-11 223937" src="https://github.com/user-attachments/assets/4334d518-2002-4e25-b0e6-f675b7a2a8e3" />
-
-
-## 🏗 Architecture Diagram
-
-<img width="877" height="567" alt="Screenshot 2026-03-11 223843" src="https://github.com/user-attachments/assets/bd62b093-0402-4e50-9ea0-653376747141" />
 
 
 ## 🗂 Project Structure
@@ -137,6 +134,66 @@ AI-Spelling-Tutor/
 
 ---
 
+## 🗺 App Flow
+
+```mermaid
+graph TD
+    Start((Start)) --> Home[Home / Dashboard]
+    Home --> WOTD[Word of the Day]
+    Home --> Practice[Practice Selection]
+    
+    Practice --> Diff{Select Difficulty}
+    Diff -->|Easy/Med/Hard| Session[Start Practice Session]
+    
+    Session --> Audio[Listen to Word]
+    Audio --> Input[Type Spelling]
+    Input --> Check{Check Spelling}
+    
+    Check -->|Correct| Success[Confetti & Streak +1]
+    Check -->|Incorrect| Feedback[Error Categorization]
+    
+    Feedback --> Retry[Try Again?]
+    Retry -->|Yes| Input
+    Retry -->|No| Next[Next Word]
+    
+    Success --> Next
+    Next --> Session
+    Next --> Stats[View Performance Stats]
+    Stats --> Home
+```
+
+## 🏗 Architecture Diagram
+
+```mermaid
+graph TD
+    Input([User Spelling Input]) --> Pipeline[Waterfall Hybrid Inference Pipeline]
+    
+    subgraph Pipeline
+        Layer1{1. Symbolic Layer}
+        Layer2{2. Override Layer}
+        Layer3{3. Neural Layer}
+        Layer4{4. Statistical Layer}
+    end
+    
+    Layer1 -->|Match Found| Correct([Return: Correct])
+    Layer1 -->|No Match| Layer2
+    
+    Layer2 -->|Match Found| ErrorCommon([Return: Common Misspelling])
+    Layer2 -->|No Match| Layer3
+    
+    Layer3 -->|High Prob Correct| Layer4
+    Layer3 -->|Low Prob Correct| Layer4
+    
+    Layer4 -->|Binary Result| Final{Final Verdict}
+    
+    Final -->|Correct| Success([Correct])
+    Final -->|Incorrect| Classification[Error ID: Vowel Confusion / Letter Swap / etc.]
+    
+    Classification --> Feedback([Return: Pedagogical Feedback])
+```
+
+---
+
 ## 🛠 Tech Stack
 
 | Component | Technology |
@@ -183,7 +240,11 @@ For the character-level classifier, **Macro F1-score** was chosen as the primary
 
 ## 🏗 Installation
 
-### 1. Backend Setup
+### 1. Model Setup
+Download the fine-tuned DistilBERT weights and save them to a directory named `distilbert_spelling/` in the root of the project.
+- **Download Link**: [DistilBERT Weights (Google Drive)](https://drive.google.com/drive/folders/1vtmAJMCh0IcBntfTnukbL9NPWSHHL0tn?usp=sharing)
+
+### 2. Backend Setup
 ```bash
 # Set up environment
 python -m venv .venv
@@ -222,6 +283,11 @@ npx expo start
 
 ## 📄 License & Contact
 Distributed under the MIT License.
+
+
+
+
+
 
 
 
