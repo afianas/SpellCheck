@@ -12,7 +12,7 @@ This project goes beyond simple autocorrect by utilizing a multi-layered inferen
 - 📊 **Pedagogical Error ID**: Categorizes mistakes into specific types (e.g., Vowel Confusion, Letter Swaps) to track student progress.
 - 🔥 **Gamified Learning**: Streak tracking, confetti animations, and adaptive difficulty levels (Easy → Medium → Hard).
 - ✨ **Word of the Day**: Daily focused practice with offline fallbacks.
-- 🎉 Confetti animation on correct answers
+- 🎉 **Result**: Confetti animation on correct answers.
 
 ---
 
